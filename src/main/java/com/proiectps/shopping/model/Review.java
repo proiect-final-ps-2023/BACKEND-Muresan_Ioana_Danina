@@ -1,9 +1,6 @@
 package com.proiectps.shopping.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,15 +21,25 @@ public class Review {
     private LocalDate date;
     private Integer rating;
 
+    @ManyToOne
+    private Perfume perfume;
+
     public Review() {
         this.date = LocalDate.now();
     }
-
 
     public Review(String author, String message, LocalDate date, Integer rating) {
         this.author = author;
         this.message = message;
         this.date = date;
         this.rating = rating;
+    }
+
+    public Review(String author, String message, Integer rating, Perfume perfume) {
+        this.author = author;
+        this.message = message;
+        this.rating = rating;
+        this.date = LocalDate.now();
+        this.perfume = perfume;
     }
 }

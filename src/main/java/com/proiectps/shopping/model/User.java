@@ -6,13 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "users")
 public class User {
 
 
@@ -21,13 +21,22 @@ public class User {
     private Long id;
 
     private String name;
+    private String username;
     private String password;
     private String email;
     private Boolean isAdmin;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch= FetchType.EAGER)
+    private List<Perfume> favorite;
+
     @OneToMany(cascade = CascadeType.ALL,fetch= FetchType.EAGER, mappedBy = "id")
     private List<Comanda> ordersList;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch= FetchType.EAGER, mappedBy = "id")
+    private List<OrderItem> orderItemsList;
+
+    @ElementCollection
+    private Map<Long, Long> perfumesIdAndQuantity= new HashMap<Long,Long>();
 
     public User(String name, String password, String email, Boolean isAdmin) {
         this.name = name;

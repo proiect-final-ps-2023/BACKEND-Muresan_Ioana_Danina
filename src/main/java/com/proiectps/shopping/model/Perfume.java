@@ -25,8 +25,10 @@ public class Perfume {
     private String fragrance_base_notes;
     private String description;
     private Integer price;
+    private Integer new_price;
     private Integer volume;
     private Integer stock;
+    private String image;
 
     @OneToMany
     @ToString.Exclude
@@ -34,4 +36,7 @@ public class Perfume {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private OrderItem orderItem;
+
+    @ManyToOne
+    private User user;
 }

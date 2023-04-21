@@ -25,7 +25,7 @@ public class Comanda {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
 
     public Comanda() {

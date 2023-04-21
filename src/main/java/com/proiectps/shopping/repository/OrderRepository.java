@@ -5,4 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface OrderRepository extends CrudRepository<Comanda,Long> {
 
+    Object findComenziByUserId(Long id);
+
+    Object findTotalComenziByUserId(Long id);
 }

@@ -1,5 +1,6 @@
 package com.proiectps.shopping.service;
 
+import com.proiectps.shopping.dto.UserDTO;
 import com.proiectps.shopping.model.Review;
 import com.proiectps.shopping.model.User;
 import com.proiectps.shopping.repository.UserRepository;
@@ -62,7 +63,7 @@ public class UserServiceTest {
         users.add(new User(2L, "Jane", "password", "jane@example.com", true));
         when(userRepository.findAll()).thenReturn(users);
 
-        List<User> result = userService.getAllUsers();
+        List<UserDTO> result = userService.getAllUsers();
 
         assertEquals(users.size(), result.size());
         assertEquals(users.get(0), result.get(0));

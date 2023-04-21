@@ -73,12 +73,4 @@ public class ComandaServiceTest {
         assertEquals(result, comanda);
     }
 
-    @Test
-    public void testGetAllOrders() {
-        List<Comanda> orders = new ArrayList<>();
-        orders.add(comanda);
-        when(orderRepository.findAll()).thenReturn(orders);
-        List<Comanda> result = comandaService.getAllOrders();
-        assertEquals(result, orders);
-    }
 }

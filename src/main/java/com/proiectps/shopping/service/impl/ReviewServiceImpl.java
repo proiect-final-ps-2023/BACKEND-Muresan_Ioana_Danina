@@ -1,6 +1,10 @@
 package com.proiectps.shopping.service.impl;
 
+import com.proiectps.shopping.dto.ReviewDTO;
+import com.proiectps.shopping.mapper.PerfumeMapper;
+import com.proiectps.shopping.mapper.ReviewMapper;
 import com.proiectps.shopping.model.Review;
+import com.proiectps.shopping.repository.PerfumeRepository;
 import com.proiectps.shopping.repository.ReviewRepository;
 import com.proiectps.shopping.service.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -16,9 +21,17 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Autowired
+    private PerfumeRepository perfumeRepository;
+
     @Override
-    public Review createReview(Review review) {
-        return reviewRepository.save(review);
+    public Review createReview(Long perfumeId, Review review) {
+      return perfumeRepository.findById(perfumeId).map(perfume -> {
+            review.setPerfume(perfume);
+            perfume.getReviews().add(review);
+            return reviewRepository.save(review);
+        }).orElseThrow(() -> new EntityNotFoundException("Perfume with id " + perfumeId + " not found"));
+
     }
 
     @Override
@@ -31,10 +44,12 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
-    @Override
-    public List<Review> getAllReviews() {
-        return (List<Review>) reviewRepository.findAll();
+    public List<ReviewDTO> getAllReviewsByPerfumeId(Long perfumeId) {
+           return perfumeRepository.findById(perfumeId).map(perfume -> perfume.getReviews().stream()
+                   .map(ReviewMapper::mapModelToDTO)
+                   .collect(Collectors.toList())).orElseThrow(() -> new EntityNotFoundException("Perfume with id " + perfumeId + " not found"));
     }
+
 
     @Override
     public Review updateReview(Long id, Review review) {
@@ -59,5 +74,9 @@ public class ReviewServiceImpl implements ReviewService {
         } else {
             throw new EntityNotFoundException("Review with id " + id + " not found");
         }
+    }
+
+    public List<Review> getAllReviews() {
+        return (List<Review>) reviewRepository.findAll();
     }
 }
