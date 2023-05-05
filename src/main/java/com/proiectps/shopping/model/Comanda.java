@@ -1,5 +1,7 @@
 package com.proiectps.shopping.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,10 +19,20 @@ public class Comanda {
     private Long id;
 
     private Integer total_price;
+
+    @NotBlank(message = "City is required")
     private String city;
+
+    @NotBlank(message = "Address is required")
     private String address;
+
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "\\d+", message = "Phone number should contain only digits")
     private String phone_number;
+
     private LocalDate date;
+
+    private Boolean transport;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;

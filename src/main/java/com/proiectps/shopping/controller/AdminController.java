@@ -81,4 +81,15 @@ public class AdminController {
         return userService.updatePrice(perfumeId,price);
     }
 
+    @GetMapping("/allLoggedIn")
+    public List<UserDTO> getAllLoggedInUsers() {
+        return userService.allLoggedUsers();
+    }
+
+    @PostMapping("/transport/{flag}")
+    public void updateTransport(@PathVariable String flag) {
+        userService.setTransport(Boolean.parseBoolean(flag));
+    }
+
+
 }

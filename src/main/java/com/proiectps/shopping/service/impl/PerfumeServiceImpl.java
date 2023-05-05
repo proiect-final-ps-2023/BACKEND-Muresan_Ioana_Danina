@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -125,6 +126,34 @@ public class PerfumeServiceImpl implements PerfumeService {
                 .map(PerfumeMapper::mapModelToDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<PerfumeDTO> perfumesOrderAsc() {
+        List<Perfume> perfumes = (List<Perfume>) perfumeRepository.findAll();
+        List<Perfume> perfumesOrderAsc;
+        perfumesOrderAsc = perfumes.stream()
+                .sorted(Comparator.comparing(perfume -> perfume.getNew_price() != null ? perfume.getNew_price() : perfume.getPrice()))
+                .collect(Collectors.toList());
+        return perfumesOrderAsc.stream()
+                .map(PerfumeMapper::mapModelToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PerfumeDTO> perfumesOrderDesc() {
+        List<Perfume> perfumes = (List<Perfume>) perfumeRepository.findAll();
+        List<Perfume> perfumesOrderDesc;
+        perfumesOrderDesc = perfumes.stream()
+                .sorted(Comparator.comparing(perfume -> perfume.getNew_price() != null ? perfume.getNew_price() : perfume.getPrice(), Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+        return perfumesOrderDesc.stream()
+                .map(PerfumeMapper::mapModelToDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
+
 
 }
 

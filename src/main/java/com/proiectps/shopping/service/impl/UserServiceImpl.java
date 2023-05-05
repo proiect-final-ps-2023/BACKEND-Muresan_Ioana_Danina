@@ -5,6 +5,7 @@ import com.proiectps.shopping.dto.UserDTO;
 import com.proiectps.shopping.mapper.PerfumeMapper;
 import com.proiectps.shopping.model.Perfume;
 import com.proiectps.shopping.model.User;
+import com.proiectps.shopping.repository.OrderRepository;
 import com.proiectps.shopping.repository.PerfumeRepository;
 import com.proiectps.shopping.repository.UserRepository;
 import com.proiectps.shopping.service.UserService;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PerfumeRepository perfumeRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -40,6 +44,8 @@ public class UserServiceImpl implements UserService {
    @Override
    public UserDTO loginUser(String username, String password) {
          Optional<User> user = userRepository.findByUsername(username);
+         user.ifPresent(value -> value.setLoginDate(new java.sql.Timestamp(System.currentTimeMillis())));
+         userRepository.save(user.get());
          if (user.isPresent()) {
              if(!user.get().getIsAdmin()) {
                  if (user.get().getPassword().equals(password)) {
@@ -47,12 +53,21 @@ public class UserServiceImpl implements UserService {
                  }
              }
          }
+
          return null;
+   }
+
+   public void logoutUser(Long userId) {
+         Optional<User> user = userRepository.findById(userId);
+         user.ifPresent(value -> value.setLoginDate(null));
+         userRepository.save(user.get());
    }
 
     @Override
     public UserDTO loginAdmin(String username, String password) {
         Optional<User> user = userRepository.findByUsername(username);
+        user.ifPresent(value -> value.setLoginDate(new java.sql.Timestamp(System.currentTimeMillis())));
+        userRepository.save(user.get());
         if (user.isPresent()) {
             if(user.get().getIsAdmin()) {
             if (user.get().getPassword().equals(password)) {
@@ -60,6 +75,14 @@ public class UserServiceImpl implements UserService {
             }
         }}
         return null;
+    }
+
+    public List<UserDTO> allLoggedUsers() {
+        List<User> users = (List<User>) userRepository.findAll();
+        return users.stream()
+                .filter(user -> user.getLoginDate() != null && !user.getIsAdmin())
+                .map(UserMapper::mapModelToDTO)
+                .collect(Collectors.toList());
     }
 
 
@@ -181,6 +204,11 @@ public class UserServiceImpl implements UserService {
         userRepository.findUserById(userId).setPerfumesIdAndQuantity(null);
         userRepository.save(userRepository.findUserById(userId));
         return null;
+    }
+
+    public void setTransport(boolean flag) {
+        orderRepository.findAll().forEach(order -> order.setTransport(flag));
+        orderRepository.saveAll(orderRepository.findAll());
     }
 
 }

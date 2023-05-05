@@ -77,4 +77,14 @@ public class PerfumeController {
         return perfumeService.findByPriceBetween(minPrice, maxPrice);
     }
 
+    @GetMapping("/sort")
+    public List<PerfumeDTO> sortPerfumesByAsc() {
+        return perfumeService.perfumesOrderAsc();
+    }
+
+    @GetMapping("/sortDesc")
+    public List<PerfumeDTO> sortPerfumesByDesc() {
+        return perfumeService.perfumesOrderDesc();
+    }
+
 }

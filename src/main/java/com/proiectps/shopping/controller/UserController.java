@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -98,6 +97,13 @@ public class UserController {
     public List<PerfumeDTO> getFavorite(@PathVariable Long userId) {
         return userService.getFavorite(userId);
     }
+
+    @PostMapping("/logoutUser/{userId}")
+    public void logoutUser(@PathVariable Long userId) {
+         userService.logoutUser(userId);
+    }
+
+
 
 
 
