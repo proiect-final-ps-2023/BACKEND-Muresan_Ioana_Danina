@@ -49,7 +49,6 @@ public class ComandaServiceTest {
         assertEquals(result.get(), comanda);
     }
 
-
     @Test
     public void testDeleteOrder() {
         when(orderRepository.findById(1L)).thenReturn(Optional.of(comanda));

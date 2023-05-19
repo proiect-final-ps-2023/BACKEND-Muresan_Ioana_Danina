@@ -1,10 +1,7 @@
 package com.proiectps.shopping.service.impl;
 
 import com.proiectps.shopping.dto.ComandaDTO;
-import com.proiectps.shopping.dto.OrderItemDTO;
 import com.proiectps.shopping.mapper.ComandaMapper;
-import com.proiectps.shopping.mapper.OrderItemMapper;
-import com.proiectps.shopping.mapper.PerfumeMapper;
 import com.proiectps.shopping.model.Comanda;
 import com.proiectps.shopping.model.OrderItem;
 import com.proiectps.shopping.model.Perfume;
@@ -13,11 +10,9 @@ import com.proiectps.shopping.repository.OrderRepository;
 import com.proiectps.shopping.repository.PerfumeRepository;
 import com.proiectps.shopping.repository.UserRepository;
 import com.proiectps.shopping.service.ComandaService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,8 +43,8 @@ public class ComandaServiceImpl implements ComandaService {
     }
 
     @Override
-    public String deleteOrder(Long orderId)
-    {   List<OrderItem> orderItems = (List<OrderItem>) orderItemRepository.findAllById(Collections.singleton(orderId));
+    public String deleteOrder(Long orderId) {
+        List<OrderItem> orderItems = (List<OrderItem>) orderItemRepository.findAllById(Collections.singleton(orderId));
         for(OrderItem orderItem : orderItems)
         {
             orderItemRepository.delete(orderItem);
@@ -60,10 +55,9 @@ public class ComandaServiceImpl implements ComandaService {
         return "Order deleted";
     }
 
-
     @Override
     public Comanda createOrder(Comanda comanda) {
-            return orderRepository.save(comanda);
+        return orderRepository.save(comanda);
     }
 
     @Override
@@ -73,6 +67,7 @@ public class ComandaServiceImpl implements ComandaService {
                 .map(ComandaMapper::mapModelToDTO)
                 .collect(Collectors.toList());
     }
+
     public Object getComenziByUserId(Long id) {
         return orderRepository.findComenziByUserId(id);
     }
@@ -108,7 +103,5 @@ public class ComandaServiceImpl implements ComandaService {
         orderRepository.save(comanda);
         return ComandaMapper.mapModelToDTO(comanda);
     }
-
-
 
 }

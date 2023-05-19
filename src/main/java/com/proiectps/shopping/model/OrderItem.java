@@ -26,7 +26,6 @@ public class OrderItem {
     @OneToOne
     private Perfume perfume;
 
-
     @ManyToOne
     private User user;
 }

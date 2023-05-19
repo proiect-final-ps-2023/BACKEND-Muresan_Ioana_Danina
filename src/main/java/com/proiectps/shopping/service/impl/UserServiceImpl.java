@@ -12,6 +12,7 @@ import com.proiectps.shopping.service.UserService;
 import jakarta.transaction.Transactional;
 import com.proiectps.shopping.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -36,25 +37,26 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> getUserById(Long userId)
-   {
+    public Optional<User> getUserById(Long userId) {
        return userRepository.findById(userId);
    }
 
    @Override
    public UserDTO loginUser(String username, String password) {
+       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
          Optional<User> user = userRepository.findByUsername(username);
          user.ifPresent(value -> value.setLoginDate(new java.sql.Timestamp(System.currentTimeMillis())));
          userRepository.save(user.get());
-         if (user.isPresent()) {
-             if(!user.get().getIsAdmin()) {
-                 if (user.get().getPassword().equals(password)) {
-                     return UserMapper.mapModelToDTO(user.get());
-                 }
-             }
-         }
-
-         return null;
+       if(!user.get().getIsAdmin()) {
+           if (passwordEncoder.matches(password, user.get().getPassword())) {
+               return UserMapper.mapModelToDTO(user.get());
+           }
+           else if(user.get().getPassword().equals(password))
+           {
+               return UserMapper.mapModelToDTO(user.get());
+           }
+       }
+       return null;
    }
 
    public void logoutUser(Long userId) {
@@ -65,16 +67,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO loginAdmin(String username, String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Optional<User> user = userRepository.findByUsername(username);
         user.ifPresent(value -> value.setLoginDate(new java.sql.Timestamp(System.currentTimeMillis())));
         userRepository.save(user.get());
-        if (user.isPresent()) {
-            if(user.get().getIsAdmin()) {
-            if (user.get().getPassword().equals(password)) {
-                return UserMapper.mapModelToDTO(user.get());
-            }
-        }}
+        if(user.get().getIsAdmin()){
+           if (passwordEncoder.matches(password, user.get().getPassword())) {
+               return UserMapper.mapModelToDTO(user.get());
+           }
+        }
         return null;
+    }
+
+    public void encryptPassword(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.get().getPassword());
+        user.get().setPassword(encodedPassword);
+        userRepository.save(user.get());
     }
 
     public List<UserDTO> allLoggedUsers() {
@@ -86,8 +96,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public User createUser(User user)
-    {
+    public User createUser(User user) {
         if(user.getUsername()== null || user.getPassword()== null || user.getEmail()== null || user.getName()== null)
         {
             throw new IllegalStateException("Username or password or email or name is null");
@@ -152,8 +161,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<PerfumeDTO> removeFromFavorite(Long userId, Long perfumeId)
-    {
+    public List<PerfumeDTO> removeFromFavorite(Long userId, Long perfumeId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
         Perfume perfume = perfumeRepository.findById(perfumeId).orElseThrow(() -> new IllegalArgumentException("Invalid perfume Id:" + perfumeId));
         user.getFavorite().remove(perfume);
@@ -163,24 +171,21 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<PerfumeDTO> getFavorite(Long userId)
-    {
+    public List<PerfumeDTO> getFavorite(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid userId" + userId));
         return user.getFavorite().stream()
                 .map(PerfumeMapper::mapModelToDTO)
                 .collect(Collectors.toList());
     }
 
-    public PerfumeDTO updatePrice(Long perfumeId, Integer newPrice)
-    {
+    public PerfumeDTO updatePrice(Long perfumeId, Integer newPrice) {
         Perfume perfume = perfumeRepository.findById(perfumeId).orElseThrow(() -> new IllegalArgumentException("Invalid perfume Id:" + 1L));
         perfume.setNew_price(newPrice);
         perfumeRepository.save(perfume);
         return PerfumeMapper.mapModelToDTO(perfume);
     }
 
-    public Map<Long,Long> createMap(Long perfumeId, Integer quantity, Long userId)
-    {
+    public Map<Long,Long> createMap(Long perfumeId, Integer quantity, Long userId) {
         Map<Long,Long> map = new HashMap<>();
         map.put(perfumeId, (long) quantity);
         if(perfumeRepository.findById(perfumeId).isPresent()) {
@@ -194,13 +199,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserById(userId).getPerfumesIdAndQuantity();
     }
 
-    public Map<Long,Long> getMap(Long userId)
-    {
+    public Map<Long,Long> getMap(Long userId) {
         return userRepository.findUserById(userId).getPerfumesIdAndQuantity();
     }
 
-    public Map<Long, Long> reinitializeMap(Long userId)
-    {
+    public Map<Long, Long> reinitializeMap(Long userId) {
         userRepository.findUserById(userId).setPerfumesIdAndQuantity(null);
         userRepository.save(userRepository.findUserById(userId));
         return null;
@@ -210,5 +213,6 @@ public class UserServiceImpl implements UserService {
         orderRepository.findAll().forEach(order -> order.setTransport(flag));
         orderRepository.saveAll(orderRepository.findAll());
     }
+
 
 }

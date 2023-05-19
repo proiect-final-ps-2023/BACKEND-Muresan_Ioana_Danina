@@ -1,6 +1,5 @@
 package com.proiectps.shopping.dto;
 
-import com.proiectps.shopping.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

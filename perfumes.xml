@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<perfumes>
+    <perfume>
+        <brand>Dior</brand>
+        <description>Sauvage is a new fragrance by Dior and will be available in September 2015. The scent is oriental-spicy.</description>
+        <fragrance_base_notes>Ambroxan</fragrance_base_notes>
+        <fragrance_middle_notes>Sichuan pepper</fragrance_middle_notes>
+        <fragrance_top_notes>Calabrian bergamot</fragrance_top_notes>
+        <gender>Male</gender>
+        <id>3</id>
+        <image>sauvage.jpg</image>
+        <new_price>400</new_price>
+        <price>399</price>
+        <stock>20</stock>
+        <title>Sauvage</title>
+        <volume>100</volume>
+    </perfume>
+    <perfume>
+        <brand>Lancome</brand>
+        <description>La Vie Est Belle is a new fragrance by Lancome and will be available in September 2012. The scent is oriental-floral.</description>
+        <fragrance_base_notes>Vanilla</fragrance_base_notes>
+        <fragrance_middle_notes>Jasmine</fragrance_middle_notes>
+        <fragrance_top_notes>Iris</fragrance_top_notes>
+        <gender>Female</gender>
+        <id>152</id>
+        <image>laVieEstBelle.jpg</image>
+        <new_price>80</new_price>
+        <price>100</price>
+        <stock>54</stock>
+        <title>La Vie Est Belle</title>
+        <volume>100</volume>
+    </perfume>
+    <perfume>
+        <brand>Hugo Boss</brand>
+        <description>Hugo Boss Bottled is a masculine fragrance by Hugo Boss.The bottle was designed by Serge Mansau.</description>
+        <fragrance_base_notes>Musk</fragrance_base_notes>
+        <fragrance_middle_notes>Geranium</fragrance_middle_notes>
+        <fragrance_top_notes>Lavender</fragrance_top_notes>
+        <gender>Male</gender>
+        <id>153</id>
+        <image>hugoBossBottled.jpg</image>
+        <price>300</price>
+        <stock>193</stock>
+        <title>Hugo Boss Bottled</title>
+        <volume>50</volume>
+    </perfume>
+    <perfume>
+        <brand>Chanel</brand>
+        <description> Aceasta este apa de parfum Chanel N°5, cel mai renumit parfum al tuturor timpurilor, folosit și de faimoasa vedetă Marilyn Monroe.</description>
+        <fragrance_base_notes>Lemn de santal, vanilie</fragrance_base_notes>
+        <fragrance_middle_notes>extras din portocala amara</fragrance_middle_notes>
+        <fragrance_top_notes>Iasomie</fragrance_top_notes>
+        <gender>Female</gender>
+        <id>402</id>
+        <image>chanel.jpg</image>
+        <price>100</price>
+        <stock>56</stock>
+        <title>Chanel N5</title>
+        <volume>100</volume>
+    </perfume>
+    <perfume>
+        <brand>Armani</brand>
+        <description>Este inspirat din povestea de dragoste profundă a unui bărbat tânăr și modern, a cărui dragoste tot mai intensă își depășește zilnic limitele.</description>
+        <fragrance_base_notes>Piper roz</fragrance_base_notes>
+        <fragrance_middle_notes>Lavanda</fragrance_middle_notes>
+        <fragrance_top_notes>Vanilie</fragrance_top_notes>
+        <gender>Male</gender>
+        <id>404</id>
+        <image>stronger.jpg</image>
+        <new_price>300</new_price>
+        <price>350</price>
+        <stock>14</stock>
+        <title>Stronger With You Intensely</title>
+        <volume>100</volume>
+    </perfume>
+    <perfume>
+        <brand>Mugler</brand>
+        <description>Aroma care vă transportă într-o altă lume. Misterioasă, magică și inconfundabilă</description>
+        <fragrance_base_notes>Lemnoase</fragrance_base_notes>
+        <fragrance_middle_notes>Vanilie</fragrance_middle_notes>
+        <fragrance_top_notes>Iasomie</fragrance_top_notes>
+        <gender>Female</gender>
+        <id>405</id>
+        <image>mugler.jpg</image>
+        <price>250</price>
+        <stock>100</stock>
+        <title>Alien</title>
+        <volume>50</volume>
+    </perfume>
+</perfumes>
